@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>The Results are here</h1>
+
+  <h3>The data you entered is: {{lis}}</h3>
+
+  <h3>The Category of the Glass is: {{ ans.0 }}</h3>
+
+  <pre>
+    Type of glass: (class attribute):
+      -- 1 buildingwindowsfloatprocessed 
+      -- 2 buildingwindowsnonfloatprocessed 
+      -- 3 vehiclewindowsfloatprocessed
+      -- 4 vehiclewindowsnonfloatprocessed (none in this database)
+      -- 5 containers
+      -- 6 tableware
+      -- 7 headlamps
+  </pre>
+  
+  <a href="{% url 'home' %}">Click here to Go to Home</a>
+</body>
+</html>

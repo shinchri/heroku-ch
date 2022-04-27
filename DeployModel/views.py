@@ -39,10 +39,15 @@ def ses_result(request):
   if request.method == 'POST':
     ses_result = ses_prediction()
 
+    index = ses_result["index"]
+
     cols = ses_result["cols"]
     rows = ses_result["rows"]
+
+    final_rows = zip(index, rows)
+    print(final_rows)
     
-    return render(request, "ses_result.html", {"cols": cols, "rows": rows})
+    return render(request, "ses_result.html", {"index": index, "cols": cols, "rows": rows, "final": final_rows})
   return render(request, "ses_index.html")
 
 
@@ -70,7 +75,9 @@ def ses_prediction():
 
   metric_df.loc[train_idx, 'SES Train Prediction'] = model_results.fittedvalues
   metric_df.loc[test_idx, 'SES Test Forecast'] = model_results.forecast(validation_days)
+  
   results = {
+    "index": metric_df.index.to_numpy(),
     "cols": metric_df.columns.to_numpy(),
     "rows": metric_df.to_numpy()
   }

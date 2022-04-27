@@ -39,15 +39,11 @@ def ses_result(request):
   if request.method == 'POST':
     ses_result = ses_prediction()
 
-    index = ses_result["index"]
-
     cols = ses_result["cols"]
-    rows = ses_result["rows"]
 
-    final_rows = zip(index, rows)
-    print(final_rows)
+    rows = ses_result["rows"]
     
-    return render(request, "ses_result.html", {"index": index, "cols": cols, "rows": rows, "final": final_rows})
+    return render(request, "ses_result.html", {"cols": cols, "rows": rows})
   return render(request, "ses_index.html")
 
 
@@ -55,7 +51,9 @@ def ses_prediction():
   module_dir = os.path.dirname(__file__)
   file_path = os.path.join(module_dir, "../static/eq3_data.csv")
 
-  metric_df = pd.read_csv(file_path, index_col="Date")
+  metric_df = pd.read_csv(file_path)
+  metric_df['Date'] = metric_df['Date'].astype('datetime64')
+  metric_df.set_index('Date')
 
   col = "Revenue"
 
@@ -76,8 +74,8 @@ def ses_prediction():
   metric_df.loc[train_idx, 'SES Train Prediction'] = model_results.fittedvalues
   metric_df.loc[test_idx, 'SES Test Forecast'] = model_results.forecast(validation_days)
   
+  print(metric_df.head(80))
   results = {
-    "index": metric_df.index.to_numpy(),
     "cols": metric_df.columns.to_numpy(),
     "rows": metric_df.to_numpy()
   }
